@@ -1,0 +1,29 @@
+meta:
+  version: "1.0"
+
+  blocks:
+  - 200_ok_response: &200_ok_response
+      server-response:
+        status: 200
+        reason: OK
+        headers:
+          fields:
+          - [ Content-Length, 16 ]
+          - [ Cache-Control, max-age=300 ]
+
+sessions:
+- transactions:
+  - all: { headers: { fields: [[ uuid, success ]]}}
+    client-request:
+      method: "GET"
+      version: "1.1"
+      scheme: "http"
+      url: /index.html
+      headers:
+        fields:
+        - [ Host, charlie.ex ]
+
+    <<: *200_ok_response
+
+    proxy-response:
+      status: 200
